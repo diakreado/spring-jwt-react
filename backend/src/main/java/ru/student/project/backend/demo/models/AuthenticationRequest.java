@@ -9,7 +9,7 @@ public class AuthenticationRequest implements Serializable {
     private String password;
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public void setUsername(String username) {
@@ -17,7 +17,7 @@ public class AuthenticationRequest implements Serializable {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
