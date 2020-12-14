@@ -13,7 +13,6 @@ class AuthService {
             headers : new Headers({ 'Content-Type': 'application/json' }),
             body    : JSON.stringify({ username, password }),
         });
-        console.log(data);
         if (data.jwt) { 
             localStorage.token = data.jwt;
             return true;

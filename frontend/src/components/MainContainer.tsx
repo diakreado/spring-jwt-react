@@ -5,14 +5,16 @@ import {
     Route,
     Link,
 } from "react-router-dom";
-import auth from '../service/auth';
+import Auth  from '../service/AuthService';
 import LoginForm from './LoginForm';
+import CreatePostForm from './CreatePostForm';
+import PostsContainer from './PostsContainer';
 
 function MainComponent() {
-    const [isLogged, setLogged] = useState(false);
+    const [isLogged, setLogged] = useState(Auth.checkAuth());
 
     function handleLogout() {
-        auth.logout();
+        Auth.logout();
         setLogged(false);
     }
 
@@ -27,26 +29,23 @@ function MainComponent() {
                             <Link to="/">Home</Link>
                         </li>
                         <li>
-                            <Link to="/about">About</Link>
+                            <Link to="/create">Create</Link>
                         </li>
                         <li>
-                            <Link to="/users">Users</Link>
-                        </li>
-                        <li>
-                            <button onClick={handleLogout}>logout</button>
+                            <button onClick={ handleLogout }>logout</button>
                         </li>
                     </ul>
                 </nav>
 
                 <Switch>
-                    <Route path="/about">
-                        <div>1</div>
-                    </Route>
-                    <Route path="/users">
-                        <div>2</div>
+                    <Route path="/create">
+                        <CreatePostForm />
                     </Route>
                     <Route path="/">
-                        <div>3</div>
+                        <div>
+                            <h1>Home</h1>
+                        </div>
+                        <PostsContainer />
                     </Route>
                 </Switch>
             </div>

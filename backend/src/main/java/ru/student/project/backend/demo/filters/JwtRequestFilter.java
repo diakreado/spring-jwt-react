@@ -1,6 +1,6 @@
 package ru.student.project.backend.demo.filters;
 
-import ru.student.project.backend.demo.MyUserDetailsService;
+import ru.student.project.backend.demo.services.MyUserDetailsService;
 import ru.student.project.backend.demo.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

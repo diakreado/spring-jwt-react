@@ -1,13 +1,14 @@
 
 async function sendRequset(url : string, options : object) {
     const response = await fetch(url, options);
-    return           await response.json();
+    const data     = await response.json();
+    return           data;
 }
 
 async function sendRequsetWithAuth(url : string) {
     return await sendRequset(url, {
         headers : new Headers({
-            'Authentification' : `Bearer ${localStorage.token}`,
+            'Authorization' : `Bearer ${localStorage.token}`,
         }),
     });
 }

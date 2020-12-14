@@ -1,4 +1,4 @@
-package ru.student.project.backend.demo;
+package ru.student.project.backend.demo.services;
 
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

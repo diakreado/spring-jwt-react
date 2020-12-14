@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import auth from '../service/auth';
+import Auth from '../service/AuthService';
 
 
 function LoginForm(props : any) {
@@ -7,7 +7,7 @@ function LoginForm(props : any) {
 
     async function handleLoginForm(e : React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        const result = await auth.login(form.login, form.password);
+        const result = await Auth.login(form.login, form.password);
         props.setLogged(result);
     }
 
@@ -16,7 +16,7 @@ function LoginForm(props : any) {
     }
 
     return (
-        <div className="div-form">
+        <div>
             <h1>Login</h1>
             <form onSubmit={ handleLoginForm }>
                 <div>
