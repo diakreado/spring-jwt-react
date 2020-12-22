@@ -44,6 +44,7 @@ class HelloWorldController {
             throw new Exception("Incorrect username or password", e);
         }
 
+        System.out.println("lol");
 
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
