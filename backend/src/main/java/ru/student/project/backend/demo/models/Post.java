@@ -12,6 +12,8 @@ public class Post {
 
     private String title;
     private String description;
+    private String state = "wait";
+    private Long author;
     
     public int getId() {
         return id;
@@ -44,5 +46,21 @@ public class Post {
                 "title : lol" +
                 "description : lo1" +
                 "}";
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public Long getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Long author) {
+        this.author = author;
     }
 }

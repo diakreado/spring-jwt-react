@@ -42,6 +42,21 @@ class AuthService {
         localStorage.removeItem('token');
         localStorage.removeItem('name');
     }
+
+    async getUserRole(name : string) {
+        const res = await httpBuilder.sendRequset('/role/' + name, {
+            method : 'GET',
+            headers : new Headers({
+                'Authorization' : `Bearer ${ localStorage.token }`,
+                'Content-Type'  : 'application/json',
+            }),
+            // body    : JSON.stringify({ postId : key, }),?
+        });
+        // console.log('res :', res);
+        return res;
+    }
+
+    
 }
 
 export default new AuthService();

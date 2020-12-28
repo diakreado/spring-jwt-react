@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 
 // import {
 //     Switch,
@@ -76,53 +78,15 @@ function MainComponent() {
       e.preventDefault();
       console.log('handleRegister', registerData);
       Auth.register(registerData.email, registerData.login, registerData.password);
-      // const result = await Auth.login(authData.login, authData.password);
-      // if (result) {
-      //   toggleLogin();
-      //   setLogged(true);
-      // }
     }
 
 
-    // if (!isLogged) {
-    //     return <LoginForm setLogged={ setLogged } />;
-    // }
-    // return (
-    //         <div>
-    //             <nav>
-    //                 <ul>
-    //                     <li>
-    //                         <Link to="/">Home</Link>
-    //                     </li>
-    //                     <li>
-    //                         <Link to="/create">Create</Link>
-    //                     </li>
-    //                     <li>
-    //                         <button onClick={ handleLogout }>logout</button>
-    //                     </li>
-    //                 </ul>
-    //             </nav>
-
-    //             <Switch>
-    //                 <Route path="/create">
-    //                     <CreatePostForm />
-    //                 </Route>
-    //                 <Route path="/">
-    //                     <div>
-    //                         <h1>Home</h1>
-    //                     </div>
-    //                     <PostsContainer />
-    //                 </Route>
-    //             </Switch>
-    //         </div>
-    // );
-
     return (
-        <>
+        <div>
           <header>
             <h3 onClick={ toggleInfo }>Как это работает?</h3>
 
-            { isLogged ? <a href="account">{ authData.login }</a>
+            { isLogged ? <Link to="/account">{ authData.login }</Link>
                        : <h3 onClick={ toggleLogin }>Войти / Зарегистрироваться</h3> }
 
           </header>
@@ -130,7 +94,7 @@ function MainComponent() {
             <div className="container searching">
               <div className="greetings">
                 <h2>Я ищу жилье!</h2>
-                { isLogged ? <a href="search"><button className="styled-btn">Начать поиск</button></a>
+                { isLogged ? <Link to="/search" className="link-button">Начать поиск</Link>
                            : "Сначала нужно зарегистрироваться" }
               </div>
             </div>
@@ -138,7 +102,7 @@ function MainComponent() {
               <div className="greetings">
                 <h2>Я сдаю жилье!</h2>
 
-                { isLogged ? <a href="rent"><button className="styled-btn">Создать анкету</button></a>
+                { isLogged ? <Link to="/rent" className="link-button">Создать анкету</Link>
                            : "Сначала нужно зарегистрироваться" }
 
               </div>
@@ -211,7 +175,7 @@ function MainComponent() {
             </div>
           </div>
           <div className="tooltip"></div>
-        </>
+        </div>
     );
 }
 

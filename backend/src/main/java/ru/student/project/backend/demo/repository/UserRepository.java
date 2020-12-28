@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import ru.student.project.backend.demo.models.Post;
 import ru.student.project.backend.demo.models.User;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,4 +20,10 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Query("select p from User p where p.username = :s")
     public Optional<User> findUserByName(@Param("s") String s);
+
+    @Query("SELECT p FROM User p where p.role = 'consultant'")
+    public List<User> getConsultants();
+//
+//    @Query("SELECT p FROM User p")
+//    public List<User> findAllUsers();
 }

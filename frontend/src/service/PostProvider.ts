@@ -12,7 +12,7 @@ class PostProvider {
             method : 'POST',
             headers : new Headers({
                 'Authorization' : `Bearer ${localStorage.token}`,
-                'Content-Type': 'application/json',
+                'Content-Type'  : 'application/json',
             }),
             body    : JSON.stringify({
                 title,
@@ -22,18 +22,33 @@ class PostProvider {
         console.log('res :', res);
     }
 
-    async deletePost(id : number, title : string, description : string) {
+    async getPostById(key : string) {
+        const res = await httpBuilder.sendRequset('/post/' + key, {
+            method : 'GET',
+            headers : new Headers({
+                'Authorization' : `Bearer ${localStorage.token}`,
+                'Content-Type'  : 'application/json',
+            }),
+            // body    : JSON.stringify({ postId : key, }),?
+        });
+        // console.log('res :', res);
+        return res;
+        
+    }
+
+    async getRequests() {
+        const res = await httpBuilder.sendRequsetWithAuth('/requests');
+        return res;        
+    }
+
+    async deletePost(id : number) {
         const res = await httpBuilder.sendRequset('/delete-post', {
             method : 'DELETE',
             headers : new Headers({
                 'Authorization' : `Bearer ${localStorage.token}`,
-                'Content-Type': 'application/json',
+                'Content-Type'  : 'application/json',
             }),
-            body    : JSON.stringify({
-                id,
-                // title,
-                // description,
-            }),
+            body    : JSON.stringify({ id }),
         });
         console.log('res :', res);
     }
