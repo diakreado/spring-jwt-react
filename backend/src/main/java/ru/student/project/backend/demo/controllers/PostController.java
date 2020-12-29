@@ -64,7 +64,7 @@ public class PostController {
 
     @PutMapping(value = "post")
     public PostService.OkAnswer updatePost(@RequestBody Post post) {
-        return postService.createPost(post, this.getUserInfo());
+        return postService.updatePost(post);
     }
 
     @DeleteMapping(value = "delete-post")
@@ -72,6 +72,10 @@ public class PostController {
         return postService.deletePost(post);
     }
 
-
+    @PutMapping(value = "attach-organizer")
+    public PostService.OkAnswer attachOrganizerPost(@RequestBody Post post) {
+        User user = this.getUserInfo();
+        return postService.attachOrganizer(post, user);
+    }
 
 }

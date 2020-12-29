@@ -38,7 +38,7 @@ class PostProvider {
 
     async getRequests() {
         const res = await httpBuilder.sendRequsetWithAuth('/requests');
-        return res;        
+        return res;
     }
 
     async deletePost(id : number) {
@@ -49,6 +49,32 @@ class PostProvider {
                 'Content-Type'  : 'application/json',
             }),
             body    : JSON.stringify({ id }),
+        });
+        console.log('res :', res);
+    }
+    
+    async updatePost(post : object) {
+        const res = await httpBuilder.sendRequset('/post', {
+            method : 'PUT',
+            headers : new Headers({
+                'Authorization' : `Bearer ${localStorage.token}`,
+                'Content-Type'  : 'application/json',
+            }),
+            body : JSON.stringify(post),
+        });
+        console.log('res :', res);
+    }
+
+    async addPostToOrganizer(postId : number) {
+        const res = await httpBuilder.sendRequset('/attach-organizer', {
+            method : 'PUT',
+            headers : new Headers({
+                'Authorization' : `Bearer ${localStorage.token}`,
+                'Content-Type'  : 'application/json',
+            }),
+            body : JSON.stringify({
+                id : postId,
+            }),
         });
         console.log('res :', res);
     }

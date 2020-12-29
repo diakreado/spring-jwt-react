@@ -14,6 +14,7 @@ public class Post {
     private String description;
     private String state = "wait";
     private Long author;
+    private Long organizer;
     
     public int getId() {
         return id;
@@ -39,7 +40,6 @@ public class Post {
         this.title = title;
     }
 
-
     @Override
     public String toString() {
         return "{" +
@@ -62,5 +62,13 @@ public class Post {
 
     public void setAuthor(Long author) {
         this.author = author;
+    }
+
+    public Long getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(Long organizer) {
+        this.organizer = organizer;
     }
 }

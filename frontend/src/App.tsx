@@ -15,6 +15,7 @@ import CreatePost from './components/CreatePost';
 import Search from './components/Search';
 import Announcement from './components/Announcement';
 import Accsettings from './components/Accsettings';
+import EditPost from './components/EditPost';
 
 function App() {
   return (
@@ -35,6 +36,9 @@ function App() {
                      </Route>
                      <Route path="/adminpage/:id">
                          <Accsettings />
+                     </Route>
+                     <Route path="/requestediting/:id">
+                         <EditPost />
                      </Route>
                      <Route path="/announcemet/:id">
                          <Announcement />

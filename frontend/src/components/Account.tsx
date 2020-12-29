@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect, Link } from 'react-router-dom';
-
-// import {
-//     Switch,
-//     Route,
-//     Link,
-// } from "react-router-dom";
 import Auth from '../service/AuthService';
 import PostProvider from '../service/PostProvider';
 import UserService from '../service/UserService';
-// import LoginForm from './LoginForm';
-// import CreatePostForm from './CreatePostForm';
-// import PostsContainer from './PostsContainer';
 
 function AccountComponent() {
     const [isLogged, setLogged] = useState(Auth.checkAuth());
@@ -19,13 +10,14 @@ function AccountComponent() {
     const [requests, setRequests] = useState([]);
     const [users, setUsers] = useState([]);
 
-
     const [role, setRole] = useState('');
-    
+    const [userId, setUserId] = useState('');
+
     useEffect(() => {
         async function f() {
             {
                 const res = await Auth.getUserRole(Auth.name());
+                setUserId(res.id);
                 setRole(res.role);
             }
             {
@@ -46,14 +38,19 @@ function AccountComponent() {
         setWhichTabIsOpen(str);
     }
 
-    function organizerAddToList() {
-        console.log('organizerAddToList');
+    async function organizerAddToList(postId : number) {
+        console.log('organizerAddToList', postId);
+        await PostProvider.addPostToOrganizer(postId);
+        {
+            const res = await PostProvider.getRequests();
+            setRequests(res);
+        }
     }
 
     function userDeleteRequest(id : number) {
         console.log('deleteRequest', id);
         PostProvider.deletePost(id);
-
+        setRequests(requests.filter((request : any) => request.id !== id));
     }
 
     function deleteUser(id : number) {
@@ -66,24 +63,6 @@ function AccountComponent() {
         Auth.logout();
         setLogged(false);
     }
-
-    // map(
-    //     lambda x: {
-    //       'stateText': 'Одобрено' if x.state == 1 else 'Отклонено' if x.state == 2 else 'На рассмотрении' if x.state == 0 else 'Реализация проекта',
-    //       'stateClass': 'submit' if x.state == 1 else 'cancel' if x.state == 2 else 'watching',
-    //       'title': x.title,
-    //       'adress': x.adress,
-    //       'description': x.description,
-    //       'image': x.image,
-    //       'id': x.id
-    //     }, filter(lambda x: 
-    //       x.user == user
-    //       or user.isAdmin()
-    //       or (user.isOrganizer() and x.state == 0)
-    //       or user.isConsultant(),
-    //     Request.objects.all())
-    //   )
-    // )
 
     // accounts = list(
     //     map(
@@ -116,19 +95,7 @@ function AccountComponent() {
     //     )
     //   )
 
-    // context = {
-    //   'name': userLogin,
-    //   'roleUser': user.isUser(),
-    //   'roleStaff': user.isOrganizer() or user.isConsultant() or user.isAdmin(),
-    //   'roleOrganizer': user.isOrganizer(),
-    //   'userFullName': user.name,
-    //   'userPassword': user.password,
-    //   'userContact': user.contact,
-    //   'requests': requests,
-    //   'isSuper': user.isAdmin(),
-    //   'accounts': accounts,
     //   'accepted': acceptedRequests
-    // }
 
     return (
         <div>
@@ -174,7 +141,7 @@ function AccountComponent() {
                                     <div className="requests-list">
 
                                     {
-                                        requests.map((request : any, i) => {
+                                        requests.filter((request : any) => request.state === 'wait').map((request : any, i) => {
                                             return (
                                                 <div>
                                                     <div className="request">
@@ -197,7 +164,7 @@ function AccountComponent() {
 
                                                             {
                                                                 role === 'organizer' ?
-                                                                        <p><button className="styled-btn" onClick={ organizerAddToList }>Добавить в свой список</button></p>
+                                                                        <p><button className="styled-btn" onClick={ () => organizerAddToList(request.id) }>Добавить в свой список</button></p>
                                                                     : null
                                                             }
                                                             {
@@ -245,7 +212,7 @@ function AccountComponent() {
                                 : null
                         } */}
                         {
-                            whichTabIsOpen.includes('3') ?
+                            whichTabIsOpen.includes('3') && role === 'super' ?
                                 <div id="3" className="tabcontent">
                                     <h3>Список аккаунтов</h3>
                                     <Link style={{ backgroundColor : 'blue', color : 'white' }} to='/adminpage/' >Создать новый аккаунт</Link>
@@ -279,28 +246,38 @@ function AccountComponent() {
                                 <div id="3" className="tabcontent">
                                     <h3>Список принятых заявок</h3>
                                     <div className="requests-list">
-                                        {/* {% for request in accepted %} */}
-                                        <a href="requestediting/{{ request.id }}">
-                                            <div className="request">
-                                                {/* <div className="state {{request.stateClass}}">{{request.stateText}}</div> */}
-                                                <div className="state {{request.stateClass}}">request.stateText</div>
-                                                {/* <img src="{% get_media_prefix %}{{ request.image }}"/> */}
-                                                <img src="https://static.dezeen.com/uploads/2020/02/house-in-the-landscape-niko-arcjitect-architecture-residential-russia-houses-khurtin_dezeen_2364_hero.jpg" />
-                                                <div className="text">
-                                                    {/* <p>{{ request.title }}</p> */}
-                                                    <p>request.title</p>
-                                                    {/* <p>{{ request.adress }}</p> */}
-                                                    <p> request.adress </p>
-                                                    {/* <p>{{ request.description }}</p> */}
-                                                    <p> request.description</p>
-                                                    {/* <p><b>Владелец: {{ request.name }}, {{ request.contact }}</b></p> */}
-                                                    <p><b>Владелец: request.name ,  request.contact</b></p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        {/* {% empty %} */}
-                                        {/* Список пуст */}
-                                        {/* {% endfor %} */}
+                                        {
+                                            requests.filter((request : any) => request.organizer === userId).map((request : any, i : number) => {
+                                                const user : any = users.find((user : any) => user.id === request.author);
+                                                return <>
+                                                    <Link key={ request.id } to={ `/requestediting/${request.id}` }>
+                                                        <div className="request">
+                                                            {
+                                                                request.state === 'submit' ?
+                                                                        <div className="state submit">Одобрено</div>
+                                                                    : request.state === 'cancel' ?
+                                                                        <div className="state cancel">Отклонено</div>
+                                                                    : request.state === 'wait' ?
+                                                                        <div className="state watching">На рассмотрении</div>
+                                                                    :
+                                                                        <div className="state watching">Реализация проекта</div>
+                                                            }
+                                                            <img src="https://static.dezeen.com/uploads/2020/02/house-in-the-landscape-niko-arcjitect-architecture-residential-russia-houses-khurtin_dezeen_2364_hero.jpg" />
+                                                            <div className="text">
+                                                                <p>{ request.title }</p>
+                                                                {/* <p>request.title</p> */}
+                                                                {/* <p>{ request.adress }</p> */}
+                                                                {/* <p> request.adress </p> */}
+                                                                <p>{ request.description }</p>
+                                                                {/* <p> request.description</p> */}
+                                                                { user ? <p><b>Владелец: { user.username }, { user.email }</b></p> : null }
+                                                                {/* <p><b>Владелец: request.name ,  request.contact</b></p> */}
+                                                            </div>
+                                                        </div>
+                                                    </Link>
+                                                </>
+                                            })
+                                        }
                                     </div>
                                 </div>
                                 : null

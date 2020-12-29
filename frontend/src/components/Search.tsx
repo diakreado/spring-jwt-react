@@ -13,8 +13,7 @@ export default function Search() {
         async function f() {
             const posts = await PostProvider.getPosts();
             console.log('posts',posts);
-            
-            setPosts(posts);
+            setPosts(posts.filter((post : any) => post.state === 'submit'));
         }
         f();
     },[]);

@@ -71,12 +71,39 @@ public class PostService {
     @Transactional
     public OkAnswer deletePost(Post post) {
         try {
-//            System.out.println(post.getId());
             postRepository.deleteById(post.getId());
             return new OkAnswer();
         } catch (Exception e) {
             throw e;
         }
+    }
+
+
+    @Transactional
+    public OkAnswer attachOrganizer(Post post, User user) {
+        try {
+//            post.setId(postRepository.findMaxById() + 1);
+//            post.setAuthor(user.getId());
+//            postRepository.save(post);
+            Post updatedPost = postRepository.findById(post.getId()).get();
+            updatedPost.setOrganizer(user.getId());
+            updatedPost.setState("work");
+            postRepository.save(updatedPost);
+            return new OkAnswer();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+
+    @Transactional
+    public OkAnswer updatePost(Post post) {
+        Post newPost = postRepository.findById(post.getId()).get();
+        newPost.setState(post.getState());
+        newPost.setDescription(post.getDescription());
+        newPost.setTitle(post.getTitle());
+        postRepository.save(newPost);
+        return new OkAnswer();
     }
 
 }

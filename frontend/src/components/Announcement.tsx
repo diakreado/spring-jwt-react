@@ -15,7 +15,7 @@ function Announcement(props : any) {
         async function f() {
             const res = await PostProvider.getPostById(params.id);
             console.log(res);
-            const state = res.state === 'wait' ? 'На рассмотрении' : '';
+            const state = res.state === 'wait' ? 'На рассмотрении' : res.state === 'submit' ? 'Одобрено' : '';
             setPost({
                 title       : res.title,
                 description : res.description,
@@ -28,7 +28,6 @@ function Announcement(props : any) {
     function goBack() {
         props.history.goBack();
     }
-
 
     return <>
         <header>
